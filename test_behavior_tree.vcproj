@@ -171,27 +171,27 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\pw_behavior_action.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\pw_behavior_board.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\pw_behavior_node_action.cpp"
+				RelativePath=".\pw_behavior_condition.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\pw_behavior_node_condition.cpp"
+				RelativePath=".\pw_behavior_decorator.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\pw_behavior_node_decorator.cpp"
+				RelativePath=".\pw_behavior_selector.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\pw_behavior_node_selector.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\pw_behavior_node_sequence.cpp"
+				RelativePath=".\pw_behavior_sequence.cpp"
 				>
 			</File>
 			<File
@@ -213,7 +213,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\pw_behavior_action.h"
+				>
+			</File>
+			<File
 				RelativePath=".\pw_behavior_board.h"
+				>
+			</File>
+			<File
+				RelativePath=".\pw_behavior_condition.h"
+				>
+			</File>
+			<File
+				RelativePath=".\pw_behavior_decorator.h"
 				>
 			</File>
 			<File
@@ -221,27 +233,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\pw_behavior_facade.h"
+				RelativePath=".\pw_behavior_selector.h"
 				>
 			</File>
 			<File
-				RelativePath=".\pw_behavior_node_action.h"
-				>
-			</File>
-			<File
-				RelativePath=".\pw_behavior_node_condition.h"
-				>
-			</File>
-			<File
-				RelativePath=".\pw_behavior_node_decorator.h"
-				>
-			</File>
-			<File
-				RelativePath=".\pw_behavior_node_selector.h"
-				>
-			</File>
-			<File
-				RelativePath=".\pw_behavior_node_sequence.h"
+				RelativePath=".\pw_behavior_sequence.h"
 				>
 			</File>
 			<File
@@ -261,6 +257,10 @@
 			Name="资源文件"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
+			>
+		</Filter>
+		<Filter
+			Name="bt"
 			>
 		</Filter>
 		<File

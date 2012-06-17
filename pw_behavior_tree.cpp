@@ -4,13 +4,11 @@
 
 namespace pwngs
 {
-
-
 	BehaviorNode::BehaviorNode()
 		: m_pParent(NULL)
 		, m_pPreCondition(NULL)
-	{
-
+		, m_nStatus(BEHAVIOR_STATUS_READY)
+	{		
 	}
 
 	BehaviorNode::~BehaviorNode()
@@ -63,16 +61,38 @@ namespace pwngs
 		return 0;
 	}
 
-	int BehaviorNode::EvaluationPreCondition( BehaviorEnvriment& env )
+	EBehaviorResult BehaviorNode::EvaluationPreCondition( BehaviorEnvriment& env )
 	{
 		if(m_pPreCondition != NULL)
 			return m_pPreCondition->Evaluation(env);
-		return BEHAVIOR_RESULT_TRUE;
+		return BEHAVIOR_RESULT_SUCCESSFUL;
 	}
 
-	int BehaviorNode::Evaluation( BehaviorEnvriment& env )
+	EBehaviorResult BehaviorNode::Evaluation( BehaviorEnvriment& env )
 	{
-		return BEHAVIOR_RESULT_FALSE;
+		EBehaviorResult result = BEHAVIOR_RESULT_FAILURE;
+
+		switch(m_nStatus)
+		{
+		case BEHAVIOR_STATUS_READY:
+			{
+				if(EvaluationPreCondition(env) == BEHAVIOR_RESULT_SUCCESSFUL)
+				{
+					result = ExecutionBegan(env);
+				}
+			}
+			break;
+		case BEHAVIOR_STATUS_RUNNING:
+			{
+				result = Execute(env);
+				if(result == BEHAVIOR_RESULT_FINISHED)
+				{
+					ExecutionEnded(env);
+				}
+			}
+			break;
+		}
+		return result;
 	}
 
 	BehaviorNode* BehaviorNode::InsertNodes( BehaviorNode* node,... )
@@ -89,6 +109,24 @@ namespace pwngs
 
 		return this;
 	}
+
+	EBehaviorResult BehaviorNode::ExecutionBegan( BehaviorEnvriment& env )
+	{
+		m_nStatus = BEHAVIOR_STATUS_RUNNING;
+
+		return BEHAVIOR_RESULT_RUNNING;
+	}
+
+	EBehaviorResult BehaviorNode::Execute(BehaviorEnvriment& env)
+	{
+		return BEHAVIOR_RESULT_FINISHED;
+	}
+
+	EBehaviorResult BehaviorNode::ExecutionEnded( BehaviorEnvriment& env )
+	{
+		m_nStatus = BEHAVIOR_STATUS_READY;
+		return BEHAVIOR_RESULT_SUCCESSFUL;
+	}
 	// ----------------------------------------------------------------------------
 
 	BehaviorTree::BehaviorTree(size_t numberOfStates)
@@ -97,11 +135,11 @@ namespace pwngs
 		m_vtNodes.resize(numberOfStates);
 	}
 
-	int BehaviorTree::Evaluation( BehaviorEnvriment& env )
+	EBehaviorResult BehaviorTree::Evaluation( BehaviorEnvriment& env )
 	{
 		BehaviorNode* node = m_vtNodes[m_nCurrentState];
 		if( node != NULL)
 			return node->Evaluation(env);
-		return BEHAVIOR_RESULT_FALSE;
+		return BEHAVIOR_RESULT_FAILURE;
 	}
 }

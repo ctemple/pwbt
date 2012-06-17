@@ -2,20 +2,20 @@
 //
 
 #include "stdafx.h"
+#include <Windows.h>
 #include "pw_behavior_tree.h"
 #include "pw_behavior_board.h"
-#include "pw_behavior_node_selector.h"
-#include "pw_behavior_node_decorator.h"
-#include "pw_behavior_node_sequence.h"
-#include "pw_behavior_node_condition.h"
-#include "pw_behavior_node_action.h"
+#include "pw_behavior_selector.h"
+#include "pw_behavior_decorator.h"
+#include "pw_behavior_sequence.h"
+#include "pw_behavior_condition.h"
+#include "pw_behavior_action.h"
 #include <iostream>
-#include "pw_behavior_facade.h"
 #include <time.h>
 
 using namespace pwngs;
 
-class TestActionNode : public pwngs::BehaviorActionNode
+class TestActionNode : public pwngs::BehaviorAction
 {
 public:
 	TestActionNode(const char* text)
@@ -23,11 +23,11 @@ public:
 		mText = text;
 	}
 
-	virtual int Evaluation(BehaviorEnvriment& env)
+	virtual EBehaviorResult Execute(BehaviorEnvriment& env)
 	{
 		std::cout << "TestActionNode Evaluation:"  << mText << std::endl;
 
-		return BEHAVIOR_RESULT_TRUE;
+		return BEHAVIOR_RESULT_FINISHED;
 	}
 private:
 	std::string mText;
@@ -59,24 +59,35 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	srand(time(NULL));
 
-	BehaviorNode* node = (new BehaviorSelectorNode_Random())->InsertNodes
+	BehaviorNode* node = (new BehaviorDecoratorRepeatAlways())->InsertNodes
 		( 
-			new TestActionNode("111"),
-			new TestActionNode("222"),
-
-			(new BehaviorDecoratorNode_Counter(varCount))->InsertNodes
+			(new BehaviorDecoratorIf())->InsertNodes
 			(
-				new TestActionNode("333"),
+				(new BehaviorDecoratorNot())->InsertNodes
+				(
+					(new BehaviorCondition()),
+					NULL
+				),
+				new TestActionNode("began"),
 				NULL
 			),
 			
+
+			(new BehaviorDecoratorWait(3000))->InsertNodes
+			(
+				new TestActionNode("action"),
+				NULL
+			),
+			
+			new TestActionNode("ended"),
 			NULL
 		);
 	tree.SetStateNode(0,node);
 
 
-	for(int i = 0; i < 10; ++i)
-		tree.Evaluation(env);
+	int result = tree.Evaluation(env);
+	while(result == BEHAVIOR_RESULT_RUNNING)
+		result = tree.Evaluation(env);
 
 
 	return 0;

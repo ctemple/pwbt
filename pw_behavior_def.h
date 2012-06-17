@@ -40,13 +40,13 @@ namespace pwngs
 	class BehaviorVariable;
 	class BehaviorCharacter;
 
-	class BehaviorSelectorNode;
+	class BehaviorSelector;
 	class BehaviorSequenceNode;
 	class BehaviorParallelNode;
-	class BehaviorDecoratorNode;
+	class BehaviorDecorator;
 
-	class BehaviorConditionNode;
-	class BehaviorActionNode;
+	class BehaviorCondition;
+	class BehaviorAction;
 
 
 	class BehaviorEnvriment
@@ -72,10 +72,19 @@ namespace pwngs
 
 	enum EBehaviorResult
 	{
-		BEHAVIOR_RESULT_TRUE,
-		BEHAVIOR_RESULT_FALSE,
+		BEHAVIOR_RESULT_SUCCESSFUL,
+		BEHAVIOR_RESULT_FAILURE,
 		BEHAVIOR_RESULT_IGNORE,
-	};	
+		BEHAVIOR_RESULT_RUNNING,
+		BEHAVIOR_RESULT_FINISHED,
+	};
+
+	enum EBehaviorStatus
+	{
+		BEHAVIOR_STATUS_READY,
+		BEHAVIOR_STATUS_RUNNING,
+	};
+
 }
 
 #endif // _pw_behavior_def_

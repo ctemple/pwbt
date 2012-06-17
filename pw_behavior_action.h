@@ -5,7 +5,7 @@
 
 namespace pwngs
 {
-	class BehaviorActionNode : public BehaviorNode
+	class BehaviorAction : public BehaviorNode
 	{
 	};
 }
